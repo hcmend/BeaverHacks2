@@ -1,16 +1,14 @@
-// Function to generate random numbers
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Function to generate random math problems
 function generateProblem() {
     const operators = ['+', '-', '*', '/'];
-    const numTerms = getRandomNumber(2, 4); // Number of terms in the problem
+    const numTerms = getRandomNumber(2, 4); 
     let problem = '';
 
     for (let i = 0; i < numTerms; i++) {
-        const number = getRandomNumber(1, 20); // Random number between 1 and 20
+        const number = getRandomNumber(1, 20);
         problem += number;
 
         if (i < numTerms - 1) {
@@ -19,7 +17,6 @@ function generateProblem() {
         }
     }
 
-    // Add parentheses randomly in valid positions
     if (Math.random() > 0.5) {
         const parts = problem.split(' ');
 
@@ -46,9 +43,9 @@ function is_operator(str) {
 // Function to display problems
 function displayProblems() {
     const problemsDiv = document.getElementById('problems');
-    problemsDiv.innerHTML = ''; // Clear previous problems
+    problemsDiv.innerHTML = ''; 
 
-    for (let i = 0; i < 5; i++) { // Generate 5 problems
+    for (let i = 0; i < 5; i++) { 
         const problem = generateProblem();
         const problemDiv = document.createElement('div');
         problemDiv.className = 'problem';
@@ -61,12 +58,11 @@ function displayProblems() {
     }
 }
 
-// Function to show steps and solution
 function showSolution(problem, index) {
     const solutionDiv = document.getElementById(`solution-${index}`);
     try {
-        const steps = get_steps(problem); // Use the get_steps function
-        const result = compute_value(problem, true); // Use the compute_value function
+        const steps = get_steps(problem); 
+        const result = compute_value(problem, true); 
         solutionDiv.innerHTML = `
             <p><strong>Steps:</strong></p>
             <p>${steps.replace(/\n/g, '<br>')}</p>
@@ -77,15 +73,10 @@ function showSolution(problem, index) {
     }
 }
 
-// Event listener for the "Generate New Problems" button
 document.getElementById('generate').addEventListener('click', displayProblems);
 
-// Generate problems on page load
 document.addEventListener('DOMContentLoaded', displayProblems);
 
-// ---------------- Calculator Logic ----------------
-
-// Helper functions
 function is_operator(str) {
     return ['+', '-', '*', '/', '^'].includes(str);
 }
@@ -94,9 +85,8 @@ function is_number(str) {
     return !isNaN(parseFloat(str)) && isFinite(str);
 }
 
-// Function to compute the value of an expression
 function compute_value(expression, show_work) {
-    expression = expression.replace(/\s/g, ''); // Remove spaces
+    expression = expression.replace(/\s/g, '');
     if (!is_valid_expression(expression)) {
         throw new Error("Invalid expression");
     }
@@ -109,7 +99,6 @@ function compute_value(expression, show_work) {
     return parseFloat(expression);
 }
 
-// Function to get steps for solving an expression
 function get_steps(expression) {
     let steps = [];
     const originalExpression = expression;
@@ -123,7 +112,6 @@ function get_steps(expression) {
     return steps.join('\n');
 }
 
-// Function to handle parentheses
 function while_parentheses(expression, show_work, steps = []) {
     let open_parenthesis = expression.lastIndexOf('(');
     while (open_parenthesis !== -1) {
@@ -142,7 +130,6 @@ function while_parentheses(expression, show_work, steps = []) {
     return expression;
 }
 
-// Function to handle exponents
 function while_exponents(expression, show_work, steps = []) {
     let index = expression.indexOf('^');
     while (index !== -1) {
@@ -170,7 +157,6 @@ function while_exponents(expression, show_work, steps = []) {
     return expression;
 }
 
-// Function to handle multiplication and division
 function while_multiply_or_divide(expression, show_work, steps = []) {
     let index = expression.search(/[*\/]/);
     while (index !== -1) {
@@ -198,7 +184,6 @@ function while_multiply_or_divide(expression, show_work, steps = []) {
     return expression;
 }
 
-// Function to handle addition and subtraction
 function while_add_or_subtract(expression, show_work, steps = []) {
     let regex = /(-?\d+(\.\d+)?)([+\-])(-?\d+(\.\d+)?)/;
     let match = expression.match(regex);
@@ -216,7 +201,6 @@ function while_add_or_subtract(expression, show_work, steps = []) {
     return expression;
 }
 
-// Function to validate an expression
 function is_valid_expression(expression) {
     return /^[0-9+\-*/^().\s]+$/.test(expression);
 }

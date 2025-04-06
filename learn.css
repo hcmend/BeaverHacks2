@@ -39,7 +39,6 @@ header {
     color: #f0f0f0;
 }
 
-/* Main Content Styling */
 .content {
     padding: 20px;
     max-width: 800px;
@@ -65,8 +64,8 @@ header {
     padding: 0;
     margin: 10px 0;
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    gap: 10px; /* Add spacing between items */
+    flex-direction: column; 
+    gap: 10px; 
 }
 
 .pemdas-icons li {
@@ -112,7 +111,6 @@ header {
     background-color: #45a049;
 }
 
-/* Chat Container Styling */
 .chat-container {
     background: white;
     padding: 20px;
@@ -177,7 +175,6 @@ chat-form button:hover {
     background-color: #45a049;
 }
 
-/* Footer Styling */
 footer {
     text-align: center;
     padding: 10px;
@@ -187,7 +184,6 @@ footer {
     margin-top: 20px;
 }
 
-/* Footer Styling */
 footer {
     background-color: #4CAF50;
     color: white;
@@ -227,7 +223,6 @@ footer nav {
     text-decoration: underline;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     header h1 {
         font-size: 2rem;

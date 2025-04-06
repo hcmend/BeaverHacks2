@@ -56,11 +56,9 @@
             }
 
             try {
-                // Calculate the result and steps
                 const result = compute_value(expression, showSteps);
-                window.calculatedResult = result; // Store the result globally for checking the answer
+                window.calculatedResult = result; 
 
-                // Handle "Check My Answer"
                 if (checkAnswer) {
                     answerSection.style.display = 'block';
                     const userAnswer = document.getElementById('userAnswer').value.trim();

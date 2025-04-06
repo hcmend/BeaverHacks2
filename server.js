@@ -1,16 +1,14 @@
 const express = require('express');
-const fetch = require('node-fetch'); // Use require for node-fetch
+const fetch = require('node-fetch'); 
 const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
 const PORT = 3000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Endpoint to handle AI requests
 app.post('/api/gemini', async (req, res) => {
     const { userMessage } = req.body;
 
@@ -42,7 +40,6 @@ app.post('/api/gemini', async (req, res) => {
     }
 });
 
-// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

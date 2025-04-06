@@ -36,23 +36,22 @@ function is_number(str) {
         if (is_point) {
             num_points++;
             if (num_points > 1) {
-                return false; // More than one decimal point is invalid
+                return false; 
             }
         }
         if (is_digit) {
             num_digit++;
         }
         if (!is_point && !is_neg_sign && !is_digit) {
-            return false; // Invalid character
+            return false; 
         }
     }
 
-    return num_digit > 0; // Must contain at least one digit
+    return num_digit > 0; 
 }
 
 // determines if the expression is valid
 function is_valid_expression(expression) {
-    // if the expression is empty or null, return false
     if (!expression || expression.length === 0) {
         return false;
     }
@@ -124,7 +123,7 @@ function is_valid_expression(expression) {
     return true;
 }
 
-// will print expression
+// print expression
 function print_expression(expression) {
     const stepsDiv = document.getElementById('steps'); 
     const step = expression; 
@@ -136,12 +135,10 @@ function print_expression(expression) {
 function while_exponents(expression, show_work) {
     let index = expression.indexOf('^');
     while (index !== -1) {
-        // find the base and exponent
         let base = '';
         let exponent = '';
         let i = index - 1;
 
-        // get the base
         while (i >= 0 && !is_definitely_operator(expression[i]) && 
                 expression[i] !== '(') {
             base = expression[i] + base;
@@ -157,7 +154,6 @@ function while_exponents(expression, show_work) {
 
         const result = Math.pow(parseFloat(base), parseFloat(exponent));
 
-        // replace the base^exponent in the original expression
         expression = expression.slice(0, index - base.length) + result + 
             expression.slice(index + exponent.length + 1);
         
@@ -178,7 +174,6 @@ function while_multiply_or_divide(expression, show_work) {
         let right = '';
         let i = index - 1;
 
-        // get the left operand
         while (i >= 0 && !is_definitely_operator(expression[i]) && 
                 expression[i] !== '(') {
             left = expression[i] + left;
@@ -193,13 +188,12 @@ function while_multiply_or_divide(expression, show_work) {
             i++;
         }
 
-        // calculate the result of left and right
         const result = expression[index] === '*' ? 
             parseFloat(left) * parseFloat(right) : 
             parseFloat(left) / parseFloat(right);
 
-        // replace the left and right in the original expression
-        expression = expression.slice(0, index - left.length) + result + expression.slice(index + right.length + 1);
+        expression = expression.slice(0, index - left.length) + result + 
+                expression.slice(index + right.length + 1);
 
         if (show_work) {
             print_expression(expression);
@@ -211,11 +205,10 @@ function while_multiply_or_divide(expression, show_work) {
 }
 
 
-// while the string contains addition or subtraction, calculate the result of those operations first
+// while the string contains addition or subtraction
 function while_add_or_subtract(expression, show_work) {
     let position = 0;
 
-    // Normalize double signs
     while (position < expression.length) {
         if (expression[position] === '+' && expression[position + 1] === '-') {
             expression = expression.slice(0, position) + '-' + expression.slice(position + 2);
@@ -226,7 +219,6 @@ function while_add_or_subtract(expression, show_work) {
         }
     }
 
-    // Match addition or subtraction operations
     let regex = /(-?\d+(\.\d+)?)([+\-])(-?\d+(\.\d+)?)/;
     let match = expression.match(regex);
 
@@ -246,21 +238,18 @@ function while_add_or_subtract(expression, show_work) {
 
     return expression;
 }
-// while the string contains parentheses, calculate the result of the expression inside the parentheses first
+
 function while_parentheses(expression, show_work) {
     let open_parenthesis = expression.lastIndexOf('(');
     while (open_parenthesis !== -1) {
         let close_parenthesis = expression.indexOf(')', open_parenthesis);
 
-        // Extract the sub-expression inside the parentheses
         let sub_expression = expression.slice(open_parenthesis + 1, close_parenthesis);
 
-        // Evaluate the sub-expression
         sub_expression = while_exponents(sub_expression, false);
         sub_expression = while_multiply_or_divide(sub_expression, false);
         sub_expression = while_add_or_subtract(sub_expression, false);
 
-        // Replace the sub-expression in the original expression
         expression = expression.slice(0, open_parenthesis) + sub_expression + expression.slice(close_parenthesis + 1);
 
         open_parenthesis = expression.lastIndexOf('(');
@@ -274,28 +263,18 @@ function while_parentheses(expression, show_work) {
 
 function compute_value(expression, show_work) {
     expression = expression.replace(/\s/g, '');
-    console.log("Initial expression:", expression);
     
-    // Validate the expression first
     if (!is_valid_expression(expression)) {
         throw new Error("Invalid expression");
     }
 
     expression = while_parentheses(expression, show_work);
-    console.log("After while_parentheses:", expression);
-
     expression = while_exponents(expression, show_work);
-    console.log("After while_exponents:", expression);
-
     expression = while_multiply_or_divide(expression, show_work);
-    console.log("After while_multiply_or_divide:", expression);
-
     expression = while_add_or_subtract(expression, show_work);
-    console.log("After while_add_or_subtract:", expression);
 
     const result = parseFloat(expression); 
-    console.log("Final result:", result);
-
+ 
     return result;
 }
 
@@ -305,14 +284,12 @@ window.revealAnswer = function revealAnswer() {
     const resultDiv = document.getElementById('result');
 
     if (revealAnswerCheckbox.checked) {
-        // Show the calculated result if the checkbox is selected
         if (window.calculatedResult !== undefined) {
             resultDiv.textContent = `Result: ${window.calculatedResult}`;
         } else {
             resultDiv.textContent = 'Please calculate the result first.';
         }
     } else {
-        // Clear the result if the checkbox is deselected
         resultDiv.textContent = '';
     }
 };
