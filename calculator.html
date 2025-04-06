@@ -3,45 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="calculator.css">
     <title>Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        input, button {
-            font-size: 18px;
-            margin: 10px;
-            padding: 10px;
-        }
-        #result {
-            margin-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        #steps {
-            margin-top: 20px;
-            font-size: 16px;
-            color: gray;
-            text-align: left;
-            padding: 0 20px;
-        }
-        #debug {
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            background-color: #f5f5f5;
-            text-align: left;
-            max-height: 200px;
-            overflow-y: auto;
-            display: none;
-        }
-        #answerFeedback {
-            margin-top: 10px;
-            font-size: 16px;
-        }
-    </style>
+    
 </head>
 <body>
     <h1>Calculator</h1>
@@ -49,92 +13,92 @@
     <input type="text" id="expression" placeholder="e.g., 3+5*2">
     <br>
     <label>
-        <input type="checkbox" id="showSteps"> Show Steps
-    </label>
-    <label>
-        <input type="checkbox" id="debugMode"> Debug Mode
+        <input type="checkbox" id="showSteps"> Reveal Steps
     </label>
     <label>
         <input type="checkbox" id="checkAnswer"> Check My Answer
     </label>
     <label>
-        <input type="checkbox" id="revealAnswer" onclick="revealAnswer()"> Reveal Answer
+        <input type="checkbox" id="revealAnswer"> Reveal Answer
     </label>
     <br>
+    <button onclick="go()">Go</button>
     <div id="answerSection" style="display: none;">
         <input type="text" id="userAnswer" placeholder="Enter your answer">
-        <button onclick="checkAnswer()">Check</button>
         <div id="answerFeedback"></div>
     </div>
-    <button onclick="calculate()">Calculate</button>
     <div id="result"></div>
     <div id="steps"></div>
     <div id="debug"></div>
 
-    <!-- Include calculator_new.js -->
-    <script src="./calculator_new.js"></script>
-
+    <script src="calculator_new.js"></script>
     <script>
-        // Attach the calculate function to the global window object
-        window.calculate = function calculate() {
-            const expression = document.getElementById('expression').value; // Get the input expression
-            const showSteps = document.getElementById('showSteps').checked; // Get checkbox value
-            const debugMode = document.getElementById('debugMode').checked; // Get debug mode value
-            const checkAnswer = document.getElementById('checkAnswer').checked; // Check if "Check My Answer" is selected
+        // Function to handle the "Go" button logic
+        function go() {
+            const expression = document.getElementById('expression').value.trim();
+            const showSteps = document.getElementById('showSteps').checked;
+            const checkAnswer = document.getElementById('checkAnswer').checked;
+            const revealAnswer = document.getElementById('revealAnswer').checked;
             const resultDiv = document.getElementById('result');
             const stepsDiv = document.getElementById('steps');
-            const debugDiv = document.getElementById('debug');
             const answerSection = document.getElementById('answerSection');
             const answerFeedback = document.getElementById('answerFeedback');
-
-            // Show or hide debug div based on checkbox
-            debugDiv.style.display = debugMode ? 'block' : 'none';
-
-            // Show or hide the answer section based on the "Check My Answer" checkbox
-            answerSection.style.display = checkAnswer ? 'block' : 'none';
 
             // Clear previous results, steps, and feedback
             resultDiv.textContent = '';
             stepsDiv.innerHTML = '';
             answerFeedback.textContent = '';
+            answerSection.style.display = 'none';
 
-            try {
-                if (!expression || expression.trim() === '') {
-                    resultDiv.textContent = 'Please enter an expression';
-                    return;
-                }
-
-                // Call compute_value with the input expression and showSteps
-                const result = compute_value(expression, showSteps);
-
-                resultDiv.textContent = `Result: ${result}`;
-
-                // Store the result in a global variable for checking the answer
-                window.calculatedResult = result;
-            } catch (error) {
-                resultDiv.textContent = `Error: ${error.message}`;
-            }
-        };
-
-        // Function to check the user's answer
-        window.checkAnswer = function checkAnswer() {
-            const userAnswer = document.getElementById('userAnswer').value.trim();
-            const answerFeedback = document.getElementById('answerFeedback');
-
-            if (!userAnswer) {
-                answerFeedback.textContent = 'Please enter your answer.';
+            if (!expression) {
+                resultDiv.textContent = 'Please enter an expression.';
                 return;
             }
 
-            // Compare the user's answer with the calculated result
-            if (parseFloat(userAnswer) === window.calculatedResult) {
-                answerFeedback.textContent = 'Correct! 🎉';
-                answerFeedback.style.color = 'green';
-            } else {
-                answerFeedback.textContent = `Incorrect. The correct answer is ${window.calculatedResult}.`;
-                answerFeedback.style.color = 'red';
+            try {
+                // Calculate the result and steps
+                const result = compute_value(expression, showSteps);
+                window.calculatedResult = result; // Store the result globally for checking the answer
+
+                // Handle "Check My Answer"
+                if (checkAnswer) {
+                    answerSection.style.display = 'block';
+                    const userAnswer = document.getElementById('userAnswer').value.trim();
+                    if (userAnswer) {
+                        if (parseFloat(userAnswer) === result) {
+                            answerFeedback.textContent = 'Correct!';
+                            answerFeedback.style.color = 'green';
+                        } else {
+                            answerFeedback.textContent = 'Incorrect. Try again!';
+                            answerFeedback.style.color = 'green';
+                        }
+                    } else {
+                        answerFeedback.textContent = 'Please enter your answer.';
+                        answerFeedback.style.color = 'black';
+                    }
+                }
+
+                // Handle "Reveal Answer"
+                if (revealAnswer) {
+                    resultDiv.textContent = `Result: ${result}`;
+                }
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
             }
-        };
+        }
+
     </script>
+
+
+<footer>
+    <nav>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="learn.html">Learn</a></li>
+        <li><a href="practice.html">Practice</a></li>        
+      </ul>
+    </nav>
+</footer>
+
 </body>
 </html>
