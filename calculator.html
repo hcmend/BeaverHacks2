@@ -33,7 +33,7 @@
 
     <script src="calculator_new.js"></script>
     <script>
-        // Function to handle the "Go" button logic
+        
         function go() {
             const expression = document.getElementById('expression').value.trim();
             const showSteps = document.getElementById('showSteps').checked;
@@ -44,7 +44,7 @@
             const answerSection = document.getElementById('answerSection');
             const answerFeedback = document.getElementById('answerFeedback');
 
-            // Clear previous results, steps, and feedback
+            
             resultDiv.textContent = '';
             stepsDiv.innerHTML = '';
             answerFeedback.textContent = '';
@@ -78,7 +78,7 @@
                     }
                 }
 
-                // Handle "Reveal Answer"
+                
                 if (revealAnswer) {
                     resultDiv.textContent = `Result: ${result}`;
                 }
