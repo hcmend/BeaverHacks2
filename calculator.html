@@ -37,6 +37,10 @@
             overflow-y: auto;
             display: none;
         }
+        #answerFeedback {
+            margin-top: 10px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -50,7 +54,15 @@
     <label>
         <input type="checkbox" id="debugMode"> Debug Mode
     </label>
+    <label>
+        <input type="checkbox" id="checkAnswer"> Check My Answer
+    </label>
     <br>
+    <div id="answerSection" style="display: none;">
+        <input type="text" id="userAnswer" placeholder="Enter your answer">
+        <button onclick="checkAnswer()">Check</button>
+        <div id="answerFeedback"></div>
+    </div>
     <button onclick="calculate()">Calculate</button>
     <div id="result"></div>
     <div id="steps"></div>
@@ -67,22 +79,29 @@
             debugDiv.scrollTop = debugDiv.scrollHeight;
         }
 
-        // Attach the calculate function to the global window object
+        // Attach the calculate and checkAnswer functions to the global window object
         window.calculate = function calculate() {
             const expression = document.getElementById('expression').value; // Get the input expression
             const showSteps = document.getElementById('showSteps').checked; // Get checkbox value
             const debugMode = document.getElementById('debugMode').checked; // Get debug mode value
+            const checkAnswer = document.getElementById('checkAnswer').checked; // Check if "Check My Answer" is selected
             const resultDiv = document.getElementById('result');
             const stepsDiv = document.getElementById('steps');
             const debugDiv = document.getElementById('debug');
-            
+            const answerSection = document.getElementById('answerSection');
+            const answerFeedback = document.getElementById('answerFeedback');
+
             // Show or hide debug div based on checkbox
             debugDiv.style.display = debugMode ? 'block' : 'none';
-            
-            // Clear previous results and steps
+
+            // Show or hide the answer section based on the "Check My Answer" checkbox
+            answerSection.style.display = checkAnswer ? 'block' : 'none';
+
+            // Clear previous results, steps, and feedback
             resultDiv.textContent = '';
             stepsDiv.innerHTML = '';
-            
+            answerFeedback.textContent = '';
+
             if (debugMode) {
                 addDebug(`Starting calculation with expression: "${expression}"`);
             }
@@ -92,19 +111,22 @@
                     resultDiv.textContent = 'Please enter an expression';
                     return;
                 }
-                
+
                 if (debugMode) {
                     addDebug(`Calling compute_value with: "${expression}", showSteps=${showSteps}`);
                 }
-                
+
                 // Call compute_value with the input expression and showSteps
                 const result = compute_value(expression, showSteps);
-                
+
                 if (debugMode) {
                     addDebug(`Calculation complete. Result: ${result}`);
                 }
-                
+
                 resultDiv.textContent = `Result: ${result}`;
+
+                // Store the result in a global variable for checking the answer
+                window.calculatedResult = result;
             } catch (error) {
                 if (debugMode) {
                     addDebug(`ERROR: ${error.message}`);
@@ -113,13 +135,32 @@
                 resultDiv.textContent = `Error: ${error.message}`;
             }
         };
-        
+
+        window.checkAnswer = function checkAnswer() {
+            const userAnswer = document.getElementById('userAnswer').value.trim();
+            const answerFeedback = document.getElementById('answerFeedback');
+
+            if (!userAnswer) {
+                answerFeedback.textContent = 'Please enter your answer.';
+                return;
+            }
+
+            // Compare the user's answer with the calculated result
+            if (parseFloat(userAnswer) === window.calculatedResult) {
+                answerFeedback.textContent = 'Correct! 🎉';
+                answerFeedback.style.color = 'green';
+            } else {
+                answerFeedback.textContent = `Incorrect. The correct answer is ${window.calculatedResult}.`;
+                answerFeedback.style.color = 'red';
+            }
+        };
+
         // Initialize debug mode when page loads
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('debugMode').addEventListener('change', function() {
                 document.getElementById('debug').style.display = this.checked ? 'block' : 'none';
             });
-            
+
             // Add event listener for Enter key on expression input
             document.getElementById('expression').addEventListener('keypress', function(event) {
                 if (event.key === 'Enter') {
