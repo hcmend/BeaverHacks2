@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input, button {
+            font-size: 18px;
+            margin: 10px;
+            padding: 10px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculator</h1>
+    <p>Enter a mathematical expression:</p>
+    <input type="text" id="expression" placeholder="e.g., 3 + 5 * 2">
+    <br>
+    <label>
+        <input type="checkbox" id="showSteps"> Show Steps
+    </label>
+    <br>
+    <button onclick="calculate()">Calculate</button>
+    <div id="result"></div>
+    <div id="steps" style="margin-top: 20px; font-size: 16px; color: gray;"></div>
+
+    <script type="module">
+        import { compute_value } from './calculator.js';
+
+        // Attach the calculate function to the global window object
+        window.calculate = function calculate() {
+            const expression = document.getElementById('expression').value;
+            const showSteps = document.getElementById('showSteps').checked; // Get checkbox value
+            const resultDiv = document.getElementById('result');
+            const stepsDiv = document.getElementById('steps');
+
+            // Clear previous results and steps
+            resultDiv.textContent = '';
+            stepsDiv.innerHTML = '';
+
+            console.log("Calculate button clicked!"); // Debugging message
+
+            try {
+                const result = compute_value(expression, showSteps); // Call compute_value from calculator.js
+                resultDiv.textContent = `Result: ${result}`;
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+            }
+        };
+    </script>
+</body>
+</html>

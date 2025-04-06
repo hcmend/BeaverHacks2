@@ -1,4 +1,3 @@
-
 function is_number(str) {
     let num_digit = 0;
     let num_points = 0;
@@ -75,8 +74,10 @@ function contains(array, operator) {
 }
 
 function print_expression(array) {
-    // come back to this one
-    console.log(array.filter(item => item !== '').join(' '));
+    const stepsDiv = document.getElementById('steps'); // Get the steps div
+    const step = array.filter(item => item !== '').join(' '); // Format the current step
+    stepsDiv.innerHTML += `<p>${step}</p>`; // Append the step to the div
+    console.log(step); // Also log the step to the console for debugging
 }
 
 function while_power(array, show_work) {
@@ -169,3 +170,32 @@ function compute_value(expression, show_work) {
 
     return parseFloat(array[0]);
 }
+
+export { compute_value };
+
+/*
+function test_calculator() {
+    const expressions = [
+        "3 + 5",                  // Simple addition
+        "10 - 2 * 3",             // Mixed operators
+        "2 ^ 3",                  // Exponentiation
+        "3 + (2 * 4)",            // Parentheses
+        "(1 + 2) * (3 + 4)",      // Nested parentheses
+        "10 / (5 - 3)",           // Division with parentheses
+        "3 + 5 * 2 ^ (1 + 1)",    // Complex expression
+        "3 + (2 * (1 + 1))",      // Multiple nested parentheses
+    ];
+
+    expressions.forEach(expression => {
+        try {
+            const result = compute_value(expression, true); // Enable `show_work` for debugging
+            console.log(`Expression: ${expression} = ${result}`);
+        } catch (error) {
+            console.error(`Error evaluating expression "${expression}":`, error.message);
+        }
+    });
+}
+
+// Call the test function
+test_calculator();
+*/
