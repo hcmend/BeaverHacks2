@@ -299,4 +299,20 @@ function compute_value(expression, show_work) {
     return result;
 }
 
-export { compute_value };
+// Function to reveal the answer when the checkbox is selected
+window.revealAnswer = function revealAnswer() {
+    const revealAnswerCheckbox = document.getElementById('revealAnswer');
+    const resultDiv = document.getElementById('result');
+
+    if (revealAnswerCheckbox.checked) {
+        // Show the calculated result if the checkbox is selected
+        if (window.calculatedResult !== undefined) {
+            resultDiv.textContent = `Result: ${window.calculatedResult}`;
+        } else {
+            resultDiv.textContent = 'Please calculate the result first.';
+        }
+    } else {
+        // Clear the result if the checkbox is deselected
+        resultDiv.textContent = '';
+    }
+};

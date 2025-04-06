@@ -57,6 +57,9 @@
     <label>
         <input type="checkbox" id="checkAnswer"> Check My Answer
     </label>
+    <label>
+        <input type="checkbox" id="revealAnswer" onclick="revealAnswer()"> Reveal Answer
+    </label>
     <br>
     <div id="answerSection" style="display: none;">
         <input type="text" id="userAnswer" placeholder="Enter your answer">
@@ -68,18 +71,11 @@
     <div id="steps"></div>
     <div id="debug"></div>
 
-    <script type="module">
-        import { compute_value } from './calculator_new.js';
+    <!-- Include calculator_new.js -->
+    <script src="./calculator_new.js"></script>
 
-        // Helper function to safely add to debug console
-        function addDebug(message) {
-            const debugDiv = document.getElementById('debug');
-            const timestamp = new Date().toLocaleTimeString();
-            debugDiv.innerHTML += `<p>[${timestamp}] ${message}</p>`;
-            debugDiv.scrollTop = debugDiv.scrollHeight;
-        }
-
-        // Attach the calculate and checkAnswer functions to the global window object
+    <script>
+        // Attach the calculate function to the global window object
         window.calculate = function calculate() {
             const expression = document.getElementById('expression').value; // Get the input expression
             const showSteps = document.getElementById('showSteps').checked; // Get checkbox value
@@ -102,40 +98,25 @@
             stepsDiv.innerHTML = '';
             answerFeedback.textContent = '';
 
-            if (debugMode) {
-                addDebug(`Starting calculation with expression: "${expression}"`);
-            }
-
             try {
                 if (!expression || expression.trim() === '') {
                     resultDiv.textContent = 'Please enter an expression';
                     return;
                 }
 
-                if (debugMode) {
-                    addDebug(`Calling compute_value with: "${expression}", showSteps=${showSteps}`);
-                }
-
                 // Call compute_value with the input expression and showSteps
                 const result = compute_value(expression, showSteps);
-
-                if (debugMode) {
-                    addDebug(`Calculation complete. Result: ${result}`);
-                }
 
                 resultDiv.textContent = `Result: ${result}`;
 
                 // Store the result in a global variable for checking the answer
                 window.calculatedResult = result;
             } catch (error) {
-                if (debugMode) {
-                    addDebug(`ERROR: ${error.message}`);
-                    addDebug(`Stack trace: ${error.stack}`);
-                }
                 resultDiv.textContent = `Error: ${error.message}`;
             }
         };
 
+        // Function to check the user's answer
         window.checkAnswer = function checkAnswer() {
             const userAnswer = document.getElementById('userAnswer').value.trim();
             const answerFeedback = document.getElementById('answerFeedback');
@@ -154,20 +135,6 @@
                 answerFeedback.style.color = 'red';
             }
         };
-
-        // Initialize debug mode when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('debugMode').addEventListener('change', function() {
-                document.getElementById('debug').style.display = this.checked ? 'block' : 'none';
-            });
-
-            // Add event listener for Enter key on expression input
-            document.getElementById('expression').addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    calculate();
-                }
-            });
-        });
     </script>
 </body>
 </html>
