@@ -171,7 +171,7 @@ function compute_value(expression, show_work) {
     return parseFloat(array[0]);
 }
 
-export { compute_value };
+//export { compute_value };
 
 /*
 function test_calculator() {
