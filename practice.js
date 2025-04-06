@@ -19,10 +19,16 @@ function generateProblem() {
         }
     }
 
-    // Add parentheses randomly
+    // Add parentheses randomly in valid positions
     if (Math.random() > 0.5) {
         const parts = problem.split(' ');
-        const start = getRandomNumber(0, parts.length - 3);
+
+        // Ensure parentheses are placed around valid sub-expressions
+        let start = getRandomNumber(0, parts.length - 3);
+        while (is_operator(parts[start]) || is_operator(parts[start + 2])) {
+            start = getRandomNumber(0, parts.length - 3); // Retry until valid
+        }
+
         const end = start + 2;
         parts[start] = `(${parts[start]}`;
         parts[end] = `${parts[end]})`;
@@ -30,6 +36,11 @@ function generateProblem() {
     }
 
     return problem;
+}
+
+// Helper function to check if a string is an operator
+function is_operator(str) {
+    return ['+', '-', '*', '/'].includes(str);
 }
 
 // Function to display problems
