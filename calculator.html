@@ -39,23 +39,6 @@
             const showSteps = document.getElementById('showSteps').checked;
             const checkAnswer = document.getElementById('checkAnswer').checked;
             const revealAnswer = document.getElementById('revealAnswer').checked;
-    <script type="module">
-        import { compute_value } from './calculator_new.js';
-
-        // Helper function to safely add to debug console
-        function addDebug(message) {
-            const debugDiv = document.getElementById('debug');
-            const timestamp = new Date().toLocaleTimeString();
-            debugDiv.innerHTML += `<p>[${timestamp}] ${message}</p>`;
-            debugDiv.scrollTop = debugDiv.scrollHeight;
-        }
-
-        // Attach the calculate and checkAnswer functions to the global window object
-        window.calculate = function calculate() {
-            const expression = document.getElementById('expression').value; // Get the input expression
-            const showSteps = document.getElementById('showSteps').checked; // Get checkbox value
-            const debugMode = document.getElementById('debugMode').checked; // Get debug mode value
-            const checkAnswer = document.getElementById('checkAnswer').checked; // Check if "Check My Answer" is selected
             const resultDiv = document.getElementById('result');
             const stepsDiv = document.getElementById('steps');
             const answerSection = document.getElementById('answerSection');
@@ -67,23 +50,10 @@
             answerFeedback.textContent = '';
             answerSection.style.display = 'none';
 
-            if (debugMode) {
-                addDebug(`Starting calculation with expression: "${expression}"`);
-            }
-
             if (!expression) {
                 resultDiv.textContent = 'Please enter an expression.';
                 return;
             }
-            try {
-                if (!expression || expression.trim() === '') {
-                    resultDiv.textContent = 'Please enter an expression';
-                    return;
-                }
-
-                if (debugMode) {
-                    addDebug(`Calling compute_value with: "${expression}", showSteps=${showSteps}`);
-                }
 
             try {
                 // Calculate the result and steps
@@ -112,76 +82,11 @@
                 if (revealAnswer) {
                     resultDiv.textContent = `Result: ${result}`;
                 }
-
-                if (debugMode) {
-                    addDebug(`Calculation complete. Result: ${result}`);
-                }
-
-                resultDiv.textContent = `Result: ${result}`;
-
-                // Store the result in a global variable for checking the answer
-                window.calculatedResult = result;
             } catch (error) {
-                if (debugMode) {
-                    addDebug(`ERROR: ${error.message}`);
-                    addDebug(`Stack trace: ${error.stack}`);
-                }
                 resultDiv.textContent = `Error: ${error.message}`;
             }
         }
 
-        };
-
-        window.checkAnswer = function checkAnswer() {
-            const userAnswer = document.getElementById('userAnswer').value.trim();
-            const answerFeedback = document.getElementById('answerFeedback');
-
-            if (!userAnswer) {
-                answerFeedback.textContent = 'Please enter your answer.';
-                return;
-            }
-
-            // Compare the user's answer with the calculated result
-            if (parseFloat(userAnswer) === window.calculatedResult) {
-                answerFeedback.textContent = 'Correct! 🎉';
-                answerFeedback.style.color = 'green';
-            } else {
-                answerFeedback.textContent = `Incorrect. The correct answer is ${window.calculatedResult}.`;
-                answerFeedback.style.color = 'red';
-            }
-        };
-
-        // Function to reveal the answer when the checkbox is selected
-        window.revealAnswer = function revealAnswer() {
-            const revealAnswerCheckbox = document.getElementById('revealAnswer');
-            const resultDiv = document.getElementById('result');
-
-            if (revealAnswerCheckbox.checked) {
-                // Show the calculated result if the checkbox is selected
-                if (window.calculatedResult !== undefined) {
-                    resultDiv.textContent = `Result: ${window.calculatedResult}`;
-                } else {
-                    resultDiv.textContent = 'Please calculate the result first.';
-                }
-            } else {
-                // Clear the result if the checkbox is deselected
-                resultDiv.textContent = '';
-            }
-        };
-
-        // Initialize debug mode when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('debugMode').addEventListener('change', function() {
-                document.getElementById('debug').style.display = this.checked ? 'block' : 'none';
-            });
-
-            // Add event listener for Enter key on expression input
-            document.getElementById('expression').addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    calculate();
-                }
-            });
-        });
     </script>
 
 
