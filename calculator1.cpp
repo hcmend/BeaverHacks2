@@ -3,7 +3,6 @@
 #include <cmath>
 
 
-
 bool is_number(std::string str) {
 	// A valid number must contain at least one digit and at most one
 	// decimal point
