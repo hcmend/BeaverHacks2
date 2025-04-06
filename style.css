@@ -11,8 +11,7 @@ body {
     line-height: 1.6;
     background-color: #f9f9f9; /* Light background for readability */
     color: #333; /* Darker text for better contrast */
-    padding: 20px;
-    background-image: url('https://th.bing.com/th/id/R.df1c0734fe6cebca4f7a228578b12493?rik=D6JNtecYm7M84w&riu=http%3a%2f%2fimage.shutterstock.com%2fz%2fstock-vector-hand-drawn-math-formulas-for-background-405682171.jpg&ehk=aTjqxajKCRlW2mYitkDCU8Sdv8%2bnNANuVoGOgYaWT2s%3d&risl=&pid=ImgRaw&r=0'); /* Add a fun background image */
+    padding: 20px;   
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -96,6 +95,46 @@ main ul li a:hover {
     color: #2e7d32;
 }
 
+/* Footer Styling */
+footer {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    border-top: 3px solid #333;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer nav {
+    margin: 0 auto;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.footer-links li {
+    display: inline;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     header h1 {
@@ -118,3 +157,4 @@ main ul li a:hover {
         font-size: 1rem;
     }
 }
+
