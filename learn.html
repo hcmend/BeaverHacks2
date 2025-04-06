@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn PEMDAS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="learn.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Font Awesome for icons -->
+</head>
+<body>
+    <header>
+        <div class="header-image-container">
+            <img src="logo.jpg" alt="PEMDAS Logo">
+        </div>
+        <h1 class="site-title">Learn PEMDAS</h1>
+        <h2 class="subtitle">Master the Order of Operations with Fun Examples!</h2>
+    </header>
+
+    <main class="content">
+        <!-- PEMDAS Explanation Section -->
+        <section class="pemdas-explanation">
+            <h2>What is PEMDAS?</h2>
+            <p>
+                PEMDAS is an acronym that helps you remember the order of operations in mathematics:
+            </p>
+            <ul class="pemdas-icons">
+                <li><i class="fas fa-parentheses"></i> <strong>P</strong>: Parentheses</li>
+                <li><i class="fas fa-superscript"></i> <strong>E</strong>: Exponents</li>
+                <li><i class="fas fa-times"></i> <strong>M</strong>: Multiplication</li>
+                <li><i class="fas fa-divide"></i> <strong>D</strong>: Division</li>
+                <li><i class="fas fa-plus"></i> <strong>A</strong>: Addition</li>
+                <li><i class="fas fa-minus"></i> <strong>S</strong>: Subtraction</li>
+            </ul>
+            <p>
+                When solving math problems, always start with operations inside parentheses, then move to exponents, followed by multiplication and division (from left to right), and finally addition and subtraction (from left to right).
+            </p>
+        </section>
+
+        <!-- Example Problems Section -->
+        <section class="example-problems">
+            <h2>Example Problems</h2>
+            <p>Here are some examples to help you understand PEMDAS:</p>
+            <ul>
+                <li>
+                    <strong>Example 1:</strong> (2 + 3) × 4 = 20
+                    <button class="show-steps" onclick="toggleSteps('steps1')">Show Steps</button>
+                    <div id="steps1" class="steps hidden">
+                        <p>Step 1: Solve inside the parentheses: (2 + 3) = 5</p>
+                        <p>Step 2: Multiply: 5 × 4 = 20</p>
+                        <p><strong>Solution:</strong> 20</p>
+                    </div>
+                </li>
+                <li>
+                    <strong>Example 2:</strong> 5 + 2<sup>3</sup> = 13
+                    <button class="show-steps" onclick="toggleSteps('steps2')">Show Steps</button>
+                    <div id="steps2" class="steps hidden">
+                        <p>Step 1: Solve the exponent: 2<sup>3</sup> = 8</p>
+                        <p>Step 2: Add: 5 + 8 = 13</p>
+                        <p><strong>Solution:</strong> 13</p>
+                    </div>
+                </li>
+                <li>
+                    <strong>Example 3:</strong> 10 ÷ (2 × 5) = 1
+                    <button class="show-steps" onclick="toggleSteps('steps3')">Show Steps</button>
+                    <div id="steps3" class="steps hidden">
+                        <p>Step 1: Solve inside the parentheses: (2 × 5) = 10</p>
+                        <p>Step 2: Divide: 10 ÷ 10 = 1</p>
+                        <p><strong>Solution:</strong> 1</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>Math is fun! Keep practicing and mastering PEMDAS!</p>
+    </footer>
+
+    <script>
+        function toggleSteps(id) {
+            const steps = document.getElementById(id);
+            steps.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
