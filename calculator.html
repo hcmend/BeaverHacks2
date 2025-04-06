@@ -20,44 +20,113 @@
             font-size: 20px;
             font-weight: bold;
         }
+        #steps {
+            margin-top: 20px;
+            font-size: 16px;
+            color: gray;
+            text-align: left;
+            padding: 0 20px;
+        }
+        #debug {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f5f5f5;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <h1>Calculator</h1>
     <p>Enter a mathematical expression:</p>
-    <input type="text" id="expression" placeholder="e.g., 3 + 5 * 2">
+    <input type="text" id="expression" placeholder="e.g., 3+5*2">
     <br>
     <label>
         <input type="checkbox" id="showSteps"> Show Steps
     </label>
+    <label>
+        <input type="checkbox" id="debugMode"> Debug Mode
+    </label>
     <br>
     <button onclick="calculate()">Calculate</button>
     <div id="result"></div>
-    <div id="steps" style="margin-top: 20px; font-size: 16px; color: gray;"></div>
+    <div id="steps"></div>
+    <div id="debug"></div>
 
     <script type="module">
-        import { compute_value } from './calculator.js';
+        import { compute_value } from './calculator_new.js';
+
+        // Helper function to safely add to debug console
+        function addDebug(message) {
+            const debugDiv = document.getElementById('debug');
+            const timestamp = new Date().toLocaleTimeString();
+            debugDiv.innerHTML += `<p>[${timestamp}] ${message}</p>`;
+            debugDiv.scrollTop = debugDiv.scrollHeight;
+        }
 
         // Attach the calculate function to the global window object
         window.calculate = function calculate() {
-            const expression = document.getElementById('expression').value;
+            const expression = document.getElementById('expression').value; // Get the input expression
             const showSteps = document.getElementById('showSteps').checked; // Get checkbox value
+            const debugMode = document.getElementById('debugMode').checked; // Get debug mode value
             const resultDiv = document.getElementById('result');
             const stepsDiv = document.getElementById('steps');
-
+            const debugDiv = document.getElementById('debug');
+            
+            // Show or hide debug div based on checkbox
+            debugDiv.style.display = debugMode ? 'block' : 'none';
+            
             // Clear previous results and steps
             resultDiv.textContent = '';
             stepsDiv.innerHTML = '';
-
-            console.log("Calculate button clicked!"); // Debugging message
+            
+            if (debugMode) {
+                addDebug(`Starting calculation with expression: "${expression}"`);
+            }
 
             try {
-                const result = compute_value(expression, showSteps); // Call compute_value from calculator.js
+                if (!expression || expression.trim() === '') {
+                    resultDiv.textContent = 'Please enter an expression';
+                    return;
+                }
+                
+                if (debugMode) {
+                    addDebug(`Calling compute_value with: "${expression}", showSteps=${showSteps}`);
+                }
+                
+                // Call compute_value with the input expression and showSteps
+                const result = compute_value(expression, showSteps);
+                
+                if (debugMode) {
+                    addDebug(`Calculation complete. Result: ${result}`);
+                }
+                
                 resultDiv.textContent = `Result: ${result}`;
             } catch (error) {
+                if (debugMode) {
+                    addDebug(`ERROR: ${error.message}`);
+                    addDebug(`Stack trace: ${error.stack}`);
+                }
                 resultDiv.textContent = `Error: ${error.message}`;
             }
         };
+        
+        // Initialize debug mode when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('debugMode').addEventListener('change', function() {
+                document.getElementById('debug').style.display = this.checked ? 'block' : 'none';
+            });
+            
+            // Add event listener for Enter key on expression input
+            document.getElementById('expression').addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    calculate();
+                }
+            });
+        });
     </script>
 </body>
 </html>
